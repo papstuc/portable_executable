@@ -25,16 +25,16 @@ std::int32_t main()
 
 	std::printf("iterating exports...\n");
 
-	for (const auto& export_entry : image->exports())
+	for (const auto& [name, address] : image->exports())
 	{
-		std::printf("%s -> 0x%p\n", export_entry.name.c_str(), export_entry.address);
+		std::printf("%s -> 0x%p\n", name.c_str(), address);
 	}
 
 	std::printf("iterating imports...\n");
 
-	for (const auto& import_entry : image->imports())
+	for (const auto& [module_name, import_name, address] : image->imports())
 	{
-		std::printf("%s!%s -> 0x%p\n", import_entry.module_name.c_str(), import_entry.import_name.c_str(), import_entry.address);
+		std::printf("%s!%s -> 0x%p\n", module_name.c_str(), import_name.c_str(), address);
 	}
 
 	FreeLibrary(user32);
