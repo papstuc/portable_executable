@@ -37,6 +37,13 @@ std::int32_t main()
 		std::printf("%s!%s -> 0x%p\n", module_name.c_str(), import_name.c_str(), address);
 	}
 
+	std::printf("iterating relocations...\n");
+
+	for (const auto& relocation : image->relocations())
+	{
+		std::printf("offset: %x -> type: %x\n", relocation.offset, relocation.type);
+	}
+
 	FreeLibrary(user32);
 
 	return EXIT_SUCCESS;
