@@ -47,7 +47,7 @@ The imports iterator abstracts away boilerplate code and returns the module name
 ```cpp
 for (const auto& [module_name, import_name, address] : image->imports())
 {
-	std::printf("%s!%s -> 0x%p\n", module_name.c_str(), import_name.c_str(), address);
+    std::printf("%s!%s -> 0x%p\n", module_name.c_str(), import_name.c_str(), address);
 }
 ```
 
@@ -57,6 +57,6 @@ The relocations iterator provides the caller with a raw view of the offset of th
 ```cpp
 for (const auto& relocation : image->relocations())
 {
-	std::printf("offset: %x -> type: %x\n", relocation.offset, relocation.type);
+    std::printf("offset: %x -> type: %x\n", relocation.offset, relocation.type);
 }
 ```
