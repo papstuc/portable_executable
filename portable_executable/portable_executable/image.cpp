@@ -33,6 +33,19 @@ portable_executable::section_header_t* portable_executable::image_t::find_sectio
 	return nullptr;
 }
 
+const portable_executable::section_header_t* portable_executable::image_t::find_section(std::string_view name) const
+{
+	for (const auto& section : this->sections())
+	{
+		if (section.to_str().find(name) != std::string::npos)
+		{
+			return &section;
+		}
+	}
+
+	return nullptr;
+}
+
 std::uint8_t* portable_executable::image_t::find_export(std::string_view name) const
 {
 	for (const auto& [export_name, export_address] : this->exports())

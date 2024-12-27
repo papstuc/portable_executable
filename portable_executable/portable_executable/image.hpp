@@ -132,6 +132,8 @@ namespace portable_executable
 
 		section_header_t* find_section(std::string_view name);
 
+		const section_header_t* find_section(std::string_view name) const;
+
 		std::uint8_t* find_export(std::string_view name) const;
 	};
 }
