@@ -6,6 +6,7 @@
 #include "section_header.hpp"
 #include "export_directory.hpp"
 #include "imports_directory.hpp"
+#include "relocations_directory.hpp"
 
 namespace portable_executable
 {
@@ -92,6 +93,34 @@ namespace portable_executable
 		imports_range_t<const imports_iterator_t> imports() const
 		{
 			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.import_directory;
+
+			if (!data_directory.present())
+			{
+				return { };
+			}
+
+			auto module = reinterpret_cast<const std::uint8_t*>(this);
+
+			return { module, data_directory.virtual_address };
+		}
+
+		relocations_range_t<relocations_iterator_t> relocations()
+		{
+			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.basereloc_directory;
+
+			if (!data_directory.present())
+			{
+				return { };
+			}
+
+			auto module = reinterpret_cast<std::uint8_t*>(this);
+
+			return { module, data_directory.virtual_address };
+		}
+
+		relocations_range_t<const relocations_iterator_t> relocations() const
+		{
+			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.basereloc_directory;
 
 			if (!data_directory.present())
 			{
