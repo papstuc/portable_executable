@@ -2,20 +2,10 @@
 #include <Windows.h>
 
 #include "portable_executable/image.hpp"
+#include "portable_executable/file.hpp"
 
-std::int32_t main()
+static void run_image_tests(const portable_executable::image_t* image)
 {
-	HMODULE user32 = LoadLibrary(L"user32");
-
-	if (!user32)
-	{
-		std::printf("failed to load user32\n");
-
-		return EXIT_FAILURE;
-	}
-
-	auto image = reinterpret_cast<portable_executable::image_t*>(user32);
-
 	std::printf("iterating sections...\n");
 
 	for (const auto& section : image->sections())
@@ -43,8 +33,38 @@ std::int32_t main()
 	{
 		std::printf("offset: %x -> type: %x\n", relocation.offset, relocation.type);
 	}
+}
+
+std::int32_t main()
+{
+	// parse in-memory portable executable
+	HMODULE user32 = LoadLibrary(L"user32");
+
+	if (!user32)
+	{
+		std::printf("failed to load user32\n");
+
+		return EXIT_FAILURE;
+	}
+
+	auto in_memory_image = reinterpret_cast<const portable_executable::image_t*>(user32);
+
+	run_image_tests(in_memory_image);
 
 	FreeLibrary(user32);
+
+	// load a portable executable from filesystem
+	portable_executable::file_t ntoskrnl("C:\\Windows\\System32\\ntoskrnl.exe");
+
+	// avoid exceptions in constructor to support contexts without exception support
+	if (!ntoskrnl.load())
+	{
+		std::printf("failed to load ntoskrnl from filesystem\n");
+
+		return EXIT_FAILURE;
+	}
+
+	run_image_tests(ntoskrnl.image());
 
 	return EXIT_SUCCESS;
 }

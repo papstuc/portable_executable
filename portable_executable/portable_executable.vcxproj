@@ -90,6 +90,7 @@
     <ClCompile Include="portable_executable\data_directory.cpp" />
     <ClCompile Include="portable_executable\dos_header.cpp" />
     <ClCompile Include="portable_executable\export_directory.cpp" />
+    <ClCompile Include="portable_executable\file.cpp" />
     <ClCompile Include="portable_executable\image.cpp" />
     <ClCompile Include="portable_executable\imports_directory.cpp" />
     <ClCompile Include="portable_executable\nt_headers.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="portable_executable\data_directory.hpp" />
     <ClInclude Include="portable_executable\dos_header.hpp" />
     <ClInclude Include="portable_executable\export_directory.hpp" />
+    <ClInclude Include="portable_executable\file.hpp" />
     <ClInclude Include="portable_executable\file_header.hpp" />
     <ClInclude Include="portable_executable\image.hpp" />
     <ClInclude Include="portable_executable\imports_directory.hpp" />

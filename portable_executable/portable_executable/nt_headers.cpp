@@ -1,5 +1,10 @@
 #include "nt_headers.hpp"
 
+bool portable_executable::nt_headers_t::valid() const
+{
+	return this->signature == nt_magic;
+}
+
 portable_executable::section_header_t* portable_executable::nt_headers_t::section_headers()
 {
 	return reinterpret_cast<section_header_t*>(reinterpret_cast<std::uintptr_t>(&this->optional_header) + this->file_header.sizeof_optional_header);

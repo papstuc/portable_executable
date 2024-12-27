@@ -6,6 +6,8 @@
 
 namespace portable_executable
 {
+    static constexpr std::uint16_t dos_magic = 0x5A4D;
+
     struct dos_header_t
     {
         std::uint16_t e_magic;
@@ -27,6 +29,8 @@ namespace portable_executable
         std::uint16_t e_oeminfo;
         std::uint16_t e_res2[10];
         std::uint32_t e_lfanew;
+
+        bool valid() const;
 
         nt_headers_t* nt_headers();
 

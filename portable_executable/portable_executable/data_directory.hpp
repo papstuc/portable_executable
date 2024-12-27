@@ -42,8 +42,6 @@ namespace portable_executable
             };
 
             data_directory_t entries[max_data_directories];
-
-
         };
     };
 }

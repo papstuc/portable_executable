@@ -73,7 +73,7 @@ namespace portable_executable
 			auto functions = reinterpret_cast<const std::uint32_t*>(module + export_directory->address_of_functions);
 			auto ordinals = reinterpret_cast<const std::uint16_t*>(module + export_directory->address_of_name_ordinals);
 
-			return { module, names, functions, ordinals, export_directory->number_of_functions };
+			return { module, names, functions, ordinals, export_directory->number_of_names };
 		}
 
 		imports_range_t<imports_iterator_t> imports()

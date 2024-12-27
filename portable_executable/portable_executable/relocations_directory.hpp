@@ -6,7 +6,7 @@
 
 namespace portable_executable
 {
-    enum class e_relocation_type : std::uint16_t
+    enum class relocation_type_t : std::uint16_t
     {
         absolute,
         high,
@@ -25,7 +25,7 @@ namespace portable_executable
     struct relocation_entry_descriptor_t
     {
         std::uint16_t offset : 12;
-        e_relocation_type type : 4;
+        relocation_type_t type : 4;
     };
 
     struct raw_relocation_block_descriptor_t
