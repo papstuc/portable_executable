@@ -29,7 +29,7 @@ bool portable_executable::file_t::load()
 	std::vector<std::uint8_t> raw_buffer(file_size);
 	file_stream.read(reinterpret_cast<char*>(raw_buffer.data()), raw_buffer.size());
 
-	auto raw_image = reinterpret_cast<image_t*>(raw_buffer.data());
+	auto raw_image = reinterpret_cast<const image_t*>(raw_buffer.data());
 
 	if (!raw_image->dos_header()->valid() || !raw_image->nt_headers()->valid())
 	{
