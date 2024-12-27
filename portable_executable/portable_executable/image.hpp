@@ -34,8 +34,6 @@ namespace portable_executable
 			return { this->nt_headers()->section_headers(), this->nt_headers()->num_sections() };
 		}
 
-		section_header_t* find_section(std::string_view name);
-
 		exports_range_t<exports_iterator_t> exports()
 		{
 			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.export_directory;
@@ -131,5 +129,9 @@ namespace portable_executable
 
 			return { module, data_directory.virtual_address };
 		}
+
+		section_header_t* find_section(std::string_view name);
+
+		std::uint8_t* find_export(std::string_view name) const;
 	};
 }
