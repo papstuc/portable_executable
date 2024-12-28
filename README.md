@@ -1,5 +1,7 @@
 ## Modern C++ wrapper around the Microsoft Portable Executable file format
 
+Note: For the "no_crt" version please checkout [this](https://github.com/papstuc/nocrt_portable_executable) link.
+
 This is a W.I.P. library to interact with Microsoft PE files (.exe, .dll, .sys) in a modern C++ way.
 
 Code to traverse tables (IAT, EAT, Relocs, etc...) is being abstracted by iterators to provide developers with a clean abstracted interface to base their work on.
@@ -76,3 +78,8 @@ if (!hvi_is_any_hypervisor_present)
 
 std::printf("ntoskrnl!HviIsAnyHypervisorPresent -> 0x%p\n", hvi_is_any_hypervisor_present);
 ```
+
+## Credits
+- [noahswtf](https://github.com/noahswtf) for the relocations parsing functionality (iterator, definitions) via [this](https://github.com/papstuc/portable_executable/pull/1) pull request
+- [can1357](https://github.com/can1357) for section_characteristics_t, thunk_data_t, data_directory_t and data_directories_t definitions from his [linux-pe](https://github.com/can1357/linux-pe) library
+- [john](https://github.com/vmp38) for forcing me into releasing a version without any CRT linkage

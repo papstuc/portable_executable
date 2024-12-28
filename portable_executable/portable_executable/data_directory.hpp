@@ -14,7 +14,7 @@ namespace portable_executable
         std::uint32_t virtual_address;
         std::uint32_t size;
 
-        bool present();
+        bool present() const;
     };
 
     struct data_directories_t
