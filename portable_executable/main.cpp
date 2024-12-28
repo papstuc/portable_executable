@@ -64,7 +64,14 @@ std::int32_t main()
 		return EXIT_FAILURE;
 	}
 
-	run_image_tests(ntoskrnl.image());
+	const auto ntoskrnl_image = ntoskrnl.image();
+
+	run_image_tests(ntoskrnl_image);
+
+	// signature made for ntoskrnl version 22h2
+	std::uint8_t* hvi_is_any_hypervisor_present = ntoskrnl_image->signature_scan("40 53 48 83 EC ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 44 24 ? 33 C9 41 B9");
+
+	std::printf("ntoskrnl!HviIsAnyHypervisorPresent -> 0x%p\n", hvi_is_any_hypervisor_present);
 
 	return EXIT_SUCCESS;
 }

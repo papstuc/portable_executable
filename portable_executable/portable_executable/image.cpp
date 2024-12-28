@@ -97,10 +97,10 @@ std::uint8_t* portable_executable::image_t::signature_scan(std::string_view sign
 
 	for (const auto& section : this->sections())
 	{
-		std::uint8_t* section_start = this->as<std::uint8_t*>() + section.virtual_address;
-		std::uint8_t* section_end = section_start + section.virtual_size;
+		const std::uint8_t* section_start = this->as<const std::uint8_t*>() + section.virtual_address;
+		const std::uint8_t* section_end = section_start + section.virtual_size;
 
-		for (std::uint8_t* byte = section_start; byte < (section_end - pattern_bytes_size); byte++)
+		for (const std::uint8_t* byte = section_start; byte < (section_end - pattern_bytes_size); byte++)
 		{
 			bool found = true;
 
@@ -115,7 +115,7 @@ std::uint8_t* portable_executable::image_t::signature_scan(std::string_view sign
 
 			if (found)
 			{
-				return byte;
+				return const_cast<std::uint8_t*>(byte);
 			}
 		}
 	}
@@ -127,10 +127,10 @@ std::uint8_t* portable_executable::image_t::signature_scan(const std::uint8_t* p
 {
 	for (const auto& section : this->sections())
 	{
-		std::uint8_t* section_start = this->as<std::uint8_t*>() + section.virtual_address;
-		std::uint8_t* section_end = section_start + section.virtual_size;
+		const std::uint8_t* section_start = this->as<const std::uint8_t*>() + section.virtual_address;
+		const std::uint8_t* section_end = section_start + section.virtual_size;
 
-		for (std::uint8_t* byte = section_start; byte < (section_end - pattern_size); byte++)
+		for (const std::uint8_t* byte = section_start; byte < (section_end - pattern_size); byte++)
 		{
 			bool found = true;
 
@@ -145,7 +145,7 @@ std::uint8_t* portable_executable::image_t::signature_scan(const std::uint8_t* p
 
 			if (found)
 			{
-				return byte;
+				return const_cast<std::uint8_t*>(byte);
 			}
 		}
 	}
