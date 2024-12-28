@@ -16,6 +16,18 @@ namespace portable_executable
 		dos_header_t m_dos_header;
 
 	public:
+		template<typename T = std::uintptr_t>
+		const T as() const
+		{
+			return reinterpret_cast<T>(this);
+		}
+
+		template<typename T = std::uintptr_t>
+		T as()
+		{
+			return reinterpret_cast<T>(this);
+		}
+
 		dos_header_t* dos_header();
 
 		const dos_header_t* dos_header() const;
