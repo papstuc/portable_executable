@@ -29,9 +29,9 @@ static void run_image_tests(const portable_executable::image_t* image)
 
 	std::printf("iterating relocations...\n");
 
-	for (const auto& relocation : image->relocations())
+	for (const auto& [relocation_block, relocation_block_va] : image->relocations())
 	{
-		std::printf("offset: %x -> type: %x\n", relocation.offset, relocation.type);
+		std::printf("offset: %x -> type: %x\n", relocation_block.offset, relocation_block.type);
 	}
 }
 

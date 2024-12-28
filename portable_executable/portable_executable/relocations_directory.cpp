@@ -25,7 +25,7 @@ portable_executable::relocations_iterator_t::relocations_iterator_t(const raw_re
 
 portable_executable::relocations_iterator_t::value_type portable_executable::relocations_iterator_t::operator*() const
 {
-    return *this->current_descriptor;
+    return { *this->current_descriptor, this->current_raw_relocation_block_descriptor->virtual_address };
 }
 
 portable_executable::relocations_iterator_t& portable_executable::relocations_iterator_t::operator++()

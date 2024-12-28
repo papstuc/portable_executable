@@ -40,6 +40,12 @@ namespace portable_executable
         std::uint32_t max_entry_index;
     };
 
+    struct relocation_entry_t
+    {
+        relocation_entry_descriptor_t descriptor;
+        std::uint32_t virtual_address;
+    };
+
     class relocations_iterator_t
     {
     private:
@@ -57,7 +63,7 @@ namespace portable_executable
 
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = relocation_entry_descriptor_t;
+        using value_type = relocation_entry_t;
         using pointer = value_type*;
         using reference = value_type&;
 
