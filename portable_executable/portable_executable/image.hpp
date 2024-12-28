@@ -147,5 +147,11 @@ namespace portable_executable
 		const section_header_t* find_section(std::string_view name) const;
 
 		std::uint8_t* find_export(std::string_view name) const;
+
+		// IDA signatures
+		std::uint8_t* signature_scan(std::string_view signature) const;
+
+		// byte signatures
+		std::uint8_t* signature_scan(const std::uint8_t* pattern, std::size_t pattern_size) const;
 	};
 }
