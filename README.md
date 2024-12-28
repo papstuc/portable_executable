@@ -60,3 +60,19 @@ for (const auto& relocation : image->relocations())
     std::printf("offset: %x -> type: %x\n", relocation.offset, relocation.type);
 }
 ```
+
+### Signature scanning
+
+This library supports both IDA and Byte signature scanning.
+
+```cpp
+// signature made for ntoskrnl version 22h2
+std::uint8_t* hvi_is_any_hypervisor_present = ntoskrnl->signature_scan("40 53 48 83 EC ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 44 24 ? 33 C9 41 B9");
+
+if (!hvi_is_any_hypervisor_present)
+{
+    // handle error cases
+}
+
+std::printf("ntoskrnl!HviIsAnyHypervisorPresent -> 0x%p\n", hvi_is_any_hypervisor_present);
+```
