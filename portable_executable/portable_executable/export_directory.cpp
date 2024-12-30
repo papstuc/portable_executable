@@ -10,24 +10,9 @@ portable_executable::exports_iterator_t::value_type portable_executable::exports
 {
 	std::uint32_t name_offset = this->names[this->index];
 
-	if (!name_offset)
-	{
-		return { };
-	}
-
 	std::uint16_t ordinal_offset = this->ordinals[this->index];
 
-	if (!ordinal_offset)
-	{
-		return { };
-	}
-
 	std::uint32_t functions_offset = this->functions[ordinal_offset];
-
-	if (!functions_offset)
-	{
-		return { };
-	}
 
 	return
 	{
