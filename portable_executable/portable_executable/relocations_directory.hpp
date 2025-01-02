@@ -49,16 +49,17 @@ namespace portable_executable
     class relocations_iterator_t
     {
     private:
-        const raw_relocation_block_descriptor_t* current_raw_relocation_block_descriptor = nullptr;
-        relocation_block_t current_relocation_block = { };
+        const raw_relocation_block_descriptor_t* m_current_raw_relocation_block_descriptor = nullptr;
+        relocation_block_t m_current_relocation_block = { };
 
-        const relocation_entry_descriptor_t* current_descriptor = nullptr;
+        const relocation_entry_descriptor_t* m_current_descriptor = nullptr;
 
         void load_block(const raw_relocation_block_descriptor_t* raw_relocation_block_descriptor);
 
     public:
         relocations_iterator_t() = default;
 
+        // ReSharper disable once CppNonExplicitConvertingConstructor
         relocations_iterator_t(const raw_relocation_block_descriptor_t* raw_relocation_block_descriptor);
 
         using iterator_category = std::forward_iterator_tag;
@@ -80,8 +81,8 @@ namespace portable_executable
     class relocations_range_t
     {
     private:
-        using pointer_type = typename std::conditional<std::is_const<T>::value, const std::uint8_t*, std::uint8_t*>::type;
-        using relocation_descriptor_type = typename std::conditional<std::is_const<T>::value, const raw_relocation_block_descriptor_t*, raw_relocation_block_descriptor_t*>::type;
+        using pointer_type = std::conditional_t<std::is_const_v<T>, const std::uint8_t*, std::uint8_t*>;
+        using relocation_descriptor_type = std::conditional_t<std::is_const_v<T>, const raw_relocation_block_descriptor_t*, raw_relocation_block_descriptor_t*>;
 
         pointer_type m_module = nullptr;
 
@@ -101,7 +102,8 @@ namespace portable_executable
             return { this->m_raw_relocation_block_descriptor };
         }
 
-        T end() const
+        // ReSharper disable once CppMemberFunctionMayBeStatic
+        T end()
         {
             return { nullptr };
         }

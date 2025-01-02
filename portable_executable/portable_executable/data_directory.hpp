@@ -3,8 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-#include "export_directory.hpp"
-
 namespace portable_executable
 {
     static constexpr std::size_t max_data_directories = 16;
@@ -14,7 +12,7 @@ namespace portable_executable
         std::uint32_t virtual_address;
         std::uint32_t size;
 
-        bool present() const;
+        [[nodiscard]] bool present() const;
     };
 
     struct data_directories_t

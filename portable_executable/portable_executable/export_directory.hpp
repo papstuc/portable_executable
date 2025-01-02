@@ -13,12 +13,11 @@ namespace portable_executable
 
     class exports_iterator_t
     {
-    private:
-        const std::uint8_t* module = nullptr;
-        const std::uint32_t* names = nullptr;
-        const std::uint32_t* functions = nullptr;
-        const std::uint16_t* ordinals = nullptr;
-        std::uint32_t index = 0;
+        const std::uint8_t* m_module = nullptr;
+        const std::uint32_t* m_names = nullptr;
+        const std::uint32_t* m_functions = nullptr;
+        const std::uint16_t* m_ordinals = nullptr;
+        std::uint32_t m_index = 0;
 
     public:
         exports_iterator_t(const std::uint8_t* module, const std::uint32_t* names, const std::uint32_t* functions, const std::uint16_t* ordinals, std::uint32_t index);
@@ -33,18 +32,18 @@ namespace portable_executable
 
         exports_iterator_t& operator++();
 
-        bool operator==(const exports_iterator_t& other);
+        bool operator==(const exports_iterator_t& other) const;
 
-        bool operator!=(const exports_iterator_t& other);
+        bool operator!=(const exports_iterator_t& other) const;
     };
 
     template<typename T>
     class exports_range_t
     {
     private:
-        using pointer_type = typename std::conditional<std::is_const<T>::value, const std::uint8_t*, std::uint8_t*>::type;
-        using uint32_pointer = typename std::conditional<std::is_const<T>::value, const std::uint32_t*, std::uint32_t*>::type;
-        using uint16_pointer = typename std::conditional<std::is_const<T>::value, const std::uint16_t*, std::uint16_t*>::type;
+        using pointer_type = std::conditional_t<std::is_const_v<T>, const std::uint8_t*, std::uint8_t*>;
+        using uint32_pointer = std::conditional_t<std::is_const_v<T>, const std::uint32_t*, std::uint32_t*>;
+        using uint16_pointer = std::conditional_t<std::is_const_v<T>, const std::uint16_t*, std::uint16_t*>;
 
         pointer_type m_module = nullptr;
         uint32_pointer m_names = nullptr;
@@ -56,7 +55,7 @@ namespace portable_executable
     public:
         exports_range_t() = default;
 
-        exports_range_t(pointer_type module, uint32_pointer names, uint32_pointer functions, uint16_pointer ordinals, std::uint32_t num_exports) :
+        exports_range_t(pointer_type module, uint32_pointer names, uint32_pointer functions, uint16_pointer ordinals, const std::uint32_t num_exports) :
             m_module(module), m_names(names), m_functions(functions), m_ordinals(ordinals), m_num_exports(num_exports)
         {
 

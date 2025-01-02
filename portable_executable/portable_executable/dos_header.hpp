@@ -30,10 +30,10 @@ namespace portable_executable
         std::uint16_t e_res2[10];
         std::uint32_t e_lfanew;
 
-        bool valid() const;
+        [[nodiscard]] bool valid() const;
 
         nt_headers_t* nt_headers();
 
-        const nt_headers_t* nt_headers() const;
+        [[nodiscard]] const nt_headers_t* nt_headers() const;
     };
 }

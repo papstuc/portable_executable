@@ -17,12 +17,12 @@ namespace portable_executable
         file_header_t file_header;
         optional_header_t optional_header;
 
-        bool valid() const;
+        [[nodiscard]] bool valid() const;
 
         section_header_t* section_headers();
 
-        const section_header_t* section_headers() const;
+        [[nodiscard]] const section_header_t* section_headers() const;
 
-        std::uint16_t num_sections() const;
+        [[nodiscard]] std::uint16_t num_sections() const;
     };
 } 

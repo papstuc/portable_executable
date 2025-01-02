@@ -3,11 +3,11 @@
 
 #include <fstream>
 
-portable_executable::file_t::file_t(std::string_view file_path) : m_file_path(file_path)
+portable_executable::file_t::file_t(const std::string_view file_path) : m_file_path(file_path)
 {
 }
 
-portable_executable::file_t::file_t(std::wstring_view file_path) : m_file_path(file_path)
+portable_executable::file_t::file_t(const std::wstring_view file_path) : m_file_path(file_path)
 {
 }
 
@@ -22,14 +22,14 @@ bool portable_executable::file_t::load()
 
 	file_stream.seekg(0, std::ios::end);
 
-	std::streampos file_size = file_stream.tellg();
+	const std::streampos file_size = file_stream.tellg();
 
 	file_stream.seekg(0, std::ios::beg);
 
 	std::vector<std::uint8_t> raw_buffer(file_size);
-	file_stream.read(reinterpret_cast<char*>(raw_buffer.data()), raw_buffer.size());
+	file_stream.read(reinterpret_cast<char*>(raw_buffer.data()), static_cast<std::streamsize>(raw_buffer.size()));
 
-	auto raw_image = reinterpret_cast<const image_t*>(raw_buffer.data());
+	const auto raw_image = reinterpret_cast<const image_t*>(raw_buffer.data());
 
 	if (!raw_image->dos_header()->valid() || !raw_image->nt_headers()->valid())
 	{

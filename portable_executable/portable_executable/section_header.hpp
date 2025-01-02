@@ -55,7 +55,7 @@ namespace portable_executable
         std::uint16_t number_of_linenumbers;
         section_characteristics_t characteristics;
 
-        std::string to_str() const;
+        [[nodiscard]] std::string to_str() const;
     };
 
     template<typename T>
@@ -67,7 +67,7 @@ namespace portable_executable
         std::uint16_t m_num_sections = 0;
 
     public:
-        section_iterator_t(T* base, std::uint16_t num_sections) : m_base(base), m_num_sections(num_sections)
+        section_iterator_t(T* base, const std::uint16_t num_sections) : m_base(base), m_num_sections(num_sections)
         {
 
         }

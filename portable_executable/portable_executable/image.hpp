@@ -12,43 +12,36 @@ namespace portable_executable
 {
 	class image_t
 	{
-	private:
-		dos_header_t m_dos_header;
+		dos_header_t m_dos_header = { };
 
 	public:
 		template<typename T = std::uintptr_t>
-		const T as() const
-		{
-			return reinterpret_cast<T>(this);
-		}
-
-		template<typename T = std::uintptr_t>
-		T as()
+		[[nodiscard]] T as() const
 		{
 			return reinterpret_cast<T>(this);
 		}
 
 		dos_header_t* dos_header();
 
-		const dos_header_t* dos_header() const;
+		[[nodiscard]] const dos_header_t* dos_header() const;
 		
 		nt_headers_t* nt_headers();
 
-		const nt_headers_t* nt_headers() const;
+		[[nodiscard]] const nt_headers_t* nt_headers() const;
 
 		section_iterator_t<section_header_t> sections()
 		{
 			return { this->nt_headers()->section_headers(), this->nt_headers()->num_sections() };
 		}
 
-		section_iterator_t<const section_header_t> sections() const
+		[[nodiscard]] section_iterator_t<const section_header_t> sections() const
 		{
 			return { this->nt_headers()->section_headers(), this->nt_headers()->num_sections() };
 		}
 
 		exports_range_t<exports_iterator_t> exports()
 		{
-			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.export_directory;
+			const data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.export_directory;
 
 			if (!data_directory.present())
 			{
@@ -57,7 +50,7 @@ namespace portable_executable
 
 			auto module = reinterpret_cast<std::uint8_t*>(this);
 
-			auto export_directory = reinterpret_cast<export_directory_t*>(module + data_directory.virtual_address);
+			const auto export_directory = reinterpret_cast<export_directory_t*>(module + data_directory.virtual_address);
 
 			auto names = reinterpret_cast<std::uint32_t*>(module + export_directory->address_of_names);
 			auto functions = reinterpret_cast<std::uint32_t*>(module + export_directory->address_of_functions);
@@ -66,9 +59,9 @@ namespace portable_executable
 			return { module, names, functions, ordinals, export_directory->number_of_names };
 		}
 
-		exports_range_t<const exports_iterator_t> exports() const
+		[[nodiscard]] exports_range_t<const exports_iterator_t> exports() const
 		{
-			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.export_directory;
+			const data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.export_directory;
 
 			if (!data_directory.present())
 			{
@@ -77,7 +70,7 @@ namespace portable_executable
 
 			auto module = reinterpret_cast<const std::uint8_t*>(this);
 
-			auto export_directory = reinterpret_cast<const export_directory_t*>(module + data_directory.virtual_address);
+			const auto export_directory = reinterpret_cast<const export_directory_t*>(module + data_directory.virtual_address);
 
 			auto names = reinterpret_cast<const std::uint32_t*>(module + export_directory->address_of_names);
 			auto functions = reinterpret_cast<const std::uint32_t*>(module + export_directory->address_of_functions);
@@ -100,7 +93,7 @@ namespace portable_executable
 			return { module, data_directory.virtual_address };
 		}
 
-		imports_range_t<const imports_iterator_t> imports() const
+		[[nodiscard]] imports_range_t<const imports_iterator_t> imports() const
 		{
 			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.import_directory;
 
@@ -128,7 +121,7 @@ namespace portable_executable
 			return { module, data_directory.virtual_address };
 		}
 
-		relocations_range_t<const relocations_iterator_t> relocations() const
+		[[nodiscard]] relocations_range_t<const relocations_iterator_t> relocations() const
 		{
 			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.basereloc_directory;
 
@@ -144,14 +137,14 @@ namespace portable_executable
 
 		section_header_t* find_section(std::string_view name);
 
-		const section_header_t* find_section(std::string_view name) const;
+		[[nodiscard]] const section_header_t* find_section(std::string_view name) const;
 
-		std::uint8_t* find_export(std::string_view name) const;
+		[[nodiscard]] std::uint8_t* find_export(std::string_view name) const;
 
 		// IDA signatures
-		std::uint8_t* signature_scan(std::string_view signature) const;
+		[[nodiscard]] std::uint8_t* signature_scan(std::string_view signature) const;
 
 		// byte signatures
-		std::uint8_t* signature_scan(const std::uint8_t* pattern, std::size_t pattern_size) const;
+		[[nodiscard]] std::uint8_t* signature_scan(const std::uint8_t* pattern, std::size_t pattern_size) const;
 	};
 }

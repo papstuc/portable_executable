@@ -22,7 +22,7 @@ const portable_executable::nt_headers_t* portable_executable::image_t::nt_header
 	return this->dos_header()->nt_headers();
 }
 
-portable_executable::section_header_t* portable_executable::image_t::find_section(std::string_view name)
+portable_executable::section_header_t* portable_executable::image_t::find_section(const std::string_view name)
 {
 	for (auto& section : this->sections())
 	{
@@ -35,7 +35,7 @@ portable_executable::section_header_t* portable_executable::image_t::find_sectio
 	return nullptr;
 }
 
-const portable_executable::section_header_t* portable_executable::image_t::find_section(std::string_view name) const
+const portable_executable::section_header_t* portable_executable::image_t::find_section(const std::string_view name) const
 {
 	for (const auto& section : this->sections())
 	{
@@ -48,7 +48,7 @@ const portable_executable::section_header_t* portable_executable::image_t::find_
 	return nullptr;
 }
 
-std::uint8_t* portable_executable::image_t::find_export(std::string_view name) const
+std::uint8_t* portable_executable::image_t::find_export(const std::string_view name) const
 {
 	for (const auto& [export_name, export_address] : this->exports())
 	{
@@ -61,16 +61,16 @@ std::uint8_t* portable_executable::image_t::find_export(std::string_view name) c
 	return nullptr;
 }
 
-std::uint8_t* portable_executable::image_t::signature_scan(std::string_view signature) const
+std::uint8_t* portable_executable::image_t::signature_scan(const std::string_view signature) const
 {
-	auto pattern_to_bytes = [](std::string_view pattern) -> std::vector<std::int32_t>
+	auto pattern_to_bytes = [](const std::string_view pattern) -> std::vector<std::int32_t>
 	{
 		std::vector<std::int32_t> bytes;
 
 		const char* start = pattern.data();
 		const char* end = start + pattern.size();
 
-		for (char* current = const_cast<char*>(start); current < end; current++)
+		for (auto current = const_cast<char*>(start); current < end; current++)
 		{
 			if (*current == '?')
 			{
@@ -85,15 +85,15 @@ std::uint8_t* portable_executable::image_t::signature_scan(std::string_view sign
 			}
 			else
 			{
-				bytes.push_back(std::strtoul(current, &current, 16));
+				bytes.push_back(static_cast<std::int32_t>(std::strtoul(current, &current, 16)));
 			}
 		}
 
 		return bytes;
 	};
 
-	std::vector<std::int32_t> pattern_bytes = pattern_to_bytes(signature); 
-	std::size_t pattern_bytes_size = pattern_bytes.size();
+	const std::vector<std::int32_t> pattern_bytes = pattern_to_bytes(signature);
+	const std::size_t pattern_bytes_size = pattern_bytes.size();
 
 	for (const auto& section : this->sections())
 	{
@@ -123,7 +123,7 @@ std::uint8_t* portable_executable::image_t::signature_scan(std::string_view sign
 	return nullptr;
 }
 
-std::uint8_t* portable_executable::image_t::signature_scan(const std::uint8_t* pattern, std::size_t pattern_size) const
+std::uint8_t* portable_executable::image_t::signature_scan(const std::uint8_t* pattern, const std::size_t pattern_size) const
 {
 	for (const auto& section : this->sections())
 	{

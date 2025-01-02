@@ -28,10 +28,10 @@ namespace portable_executable
             std::uint64_t function;
             std::uint64_t address;
 
-            struct
+            struct  // NOLINT(clang-diagnostic-nested-anon-types)
             {
                 std::uint64_t ordinal : 16;
-                std::uint64_t _reserved0 : 47;
+                std::uint64_t reserved0 : 47;
                 std::uint64_t is_ordinal : 1;
             };
         };
@@ -52,12 +52,11 @@ namespace portable_executable
 
     class imports_iterator_t
     {
-    private:
-        const std::uint8_t* module = nullptr;
+        const std::uint8_t* m_module = nullptr;
 
-        const import_descriptor_t* current_descriptor = nullptr;
-        const thunk_data_t* current_thunk = nullptr;
-        const thunk_data_t* original_thunk = nullptr;
+        const import_descriptor_t* m_current_descriptor = nullptr;
+        const thunk_data_t* m_current_thunk = nullptr;
+        const thunk_data_t* m_original_thunk = nullptr;
 
     public:
         imports_iterator_t(const std::uint8_t* module, const import_descriptor_t* descriptor);
@@ -72,17 +71,17 @@ namespace portable_executable
 
         imports_iterator_t& operator++();
 
-        bool operator==(const imports_iterator_t& other);
+        bool operator==(const imports_iterator_t& other) const;
 
-        bool operator!=(const imports_iterator_t& other);
+        bool operator!=(const imports_iterator_t& other) const;
     };
     
     template<typename T>
     class imports_range_t
     {
     private:
-        using pointer_type = typename std::conditional<std::is_const<T>::value, const std::uint8_t*, std::uint8_t*>::type;
-        using import_descriptor_type = typename std::conditional<std::is_const<T>::value, const import_descriptor_t*, import_descriptor_t*>::type;
+        using pointer_type = std::conditional_t<std::is_const_v<T>, const std::uint8_t*, std::uint8_t*>;
+        using import_descriptor_type = std::conditional_t<std::is_const_v<T>, const import_descriptor_t*, import_descriptor_t*>;
 
         pointer_type m_module = nullptr;
 
