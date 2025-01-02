@@ -11,6 +11,10 @@ portable_executable::file_t::file_t(const std::wstring_view file_path) : m_file_
 {
 }
 
+portable_executable::file_t::file_t(std::filesystem::path file_path) : m_file_path(std::move(file_path))
+{
+}
+
 bool portable_executable::file_t::load()
 {
 	std::ifstream file_stream(this->m_file_path, std::ios::binary);
