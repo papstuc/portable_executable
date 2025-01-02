@@ -20,7 +20,7 @@ namespace portable_executable
 
 		explicit file_t(std::wstring_view file_path);
 
-		explicit file_t(const std::filesystem::path& file_path);
+		explicit file_t(std::filesystem::path file_path);
 
 		bool load();
 
