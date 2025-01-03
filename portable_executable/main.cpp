@@ -53,8 +53,10 @@ std::int32_t main()
 
 	FreeLibrary(user32);
 
+	std::string_view ntoskrnl_path_view = "C:\\Windows\\System32\\ntoskrnl.exe";
+
 	// load a portable executable from filesystem
-	portable_executable::file_t ntoskrnl("C:\\Windows\\System32\\ntoskrnl.exe");
+	portable_executable::file_t ntoskrnl(ntoskrnl_path_view);
 
 	// avoid exceptions in constructor to support contexts without exception support
 	if (!ntoskrnl.load())
