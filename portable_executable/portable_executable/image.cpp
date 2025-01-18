@@ -26,7 +26,7 @@ portable_executable::section_header_t* portable_executable::image_t::find_sectio
 {
 	for (auto& section : this->sections())
 	{
-		if (section.to_str().find(name) != std::string::npos)
+		if (section.to_str() == name)
 		{
 			return &section;
 		}
@@ -39,7 +39,7 @@ const portable_executable::section_header_t* portable_executable::image_t::find_
 {
 	for (const auto& section : this->sections())
 	{
-		if (section.to_str().find(name) != std::string::npos)
+		if (section.to_str() == name)
 		{
 			return &section;
 		}
@@ -52,7 +52,7 @@ std::uint8_t* portable_executable::image_t::find_export(const std::string_view n
 {
 	for (const auto& [export_name, export_address] : this->exports())
 	{
-		if (export_name.find(name) != std::string::npos)
+		if (export_name == name)
 		{
 			return export_address;
 		}
