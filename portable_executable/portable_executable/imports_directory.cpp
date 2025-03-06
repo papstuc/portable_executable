@@ -27,7 +27,10 @@ portable_executable::imports_iterator_t::value_type portable_executable::imports
 
     const std::string module_name(reinterpret_cast<const char*>(this->m_module + this->m_current_descriptor->name));
 
-    return { module_name, import_name, reinterpret_cast<std::uint8_t*>(this->m_current_thunk->function) };
+    auto* import_addr_ref = const_cast<std::uint64_t*>(&this->m_current_thunk->function);
+    auto& import_addr = *reinterpret_cast<std::uint8_t**>(import_addr_ref);
+
+    return { module_name, import_name, import_addr };
 }
 
 portable_executable::imports_iterator_t& portable_executable::imports_iterator_t::operator++()

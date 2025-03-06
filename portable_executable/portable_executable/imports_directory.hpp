@@ -47,7 +47,7 @@ namespace portable_executable
     {
         std::string module_name;
         std::string import_name;
-        std::uint8_t* address;
+        std::uint8_t*& address;
     };
 
     class imports_iterator_t
