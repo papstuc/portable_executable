@@ -13,6 +13,8 @@ void portable_executable::relocations_iterator_t::load_block(const raw_relocatio
 
         this->m_current_descriptor = reinterpret_cast<const relocation_entry_descriptor_t*>(this->m_current_raw_relocation_block_descriptor + 1);
     }
+    else 
+        this->m_current_descriptor = nullptr;
 }
 
 portable_executable::relocations_iterator_t::relocations_iterator_t(const raw_relocation_block_descriptor_t* raw_relocation_block_descriptor)
