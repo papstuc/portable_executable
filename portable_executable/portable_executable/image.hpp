@@ -44,7 +44,14 @@ namespace portable_executable
 		template <class t>
 		t calculate_alignment(t address, t alignment)
 		{
-			return address + (alignment - (address % alignment));
+			const t remainder = address % alignment;
+
+			if (!remainder)
+			{
+				return address;
+			}
+
+			return address + (alignment - remainder);
 		}
 
 		std::vector<std::uint8_t> add_section(std::string_view name, std::uint32_t size, std::uint32_t characteristics, bool is_image_decompressed = false)
