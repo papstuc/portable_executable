@@ -31,7 +31,14 @@ static void run_image_tests(const portable_executable::image_t* image)
 
 	for (const auto [relocation_block, relocation_block_va] : image->relocations())
 	{
-		std::printf("offset: %x -> type: %x\n", relocation_block.offset, relocation_block.type);
+		std::printf("offset: 0x%x -> type: 0x%x\n", relocation_block.offset, relocation_block.type);
+	}
+
+	std::printf("iterating debug information...\n");
+
+	for (const auto debug_info : image->debug_info())
+	{
+		std::printf("va: 0x%x -> type: 0x%x\n", debug_info.virtual_address, static_cast<std::uint32_t>(debug_info.type));
 	}
 }
 
