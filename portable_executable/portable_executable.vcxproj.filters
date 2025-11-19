@@ -80,5 +80,8 @@
     <ClInclude Include="portable_executable\file.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="portable_executable\debug_directory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

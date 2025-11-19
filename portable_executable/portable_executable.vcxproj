@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="portable_executable\data_directory.hpp" />
+    <ClInclude Include="portable_executable\debug_directory.hpp" />
     <ClInclude Include="portable_executable\dos_header.hpp" />
     <ClInclude Include="portable_executable\export_directory.hpp" />
     <ClInclude Include="portable_executable\file.hpp" />

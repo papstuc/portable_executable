@@ -10,6 +10,8 @@
 
 #include <vector>
 
+#include "debug_directory.hpp"
+
 namespace portable_executable
 {
 	class image_t
@@ -194,6 +196,38 @@ namespace portable_executable
 			auto module = reinterpret_cast<const std::uint8_t*>(this);
 
 			return { module, data_directory.virtual_address };
+		}
+
+		[[nodiscard]] debug_info_iterator_t<debug_directory_t> debug_info()
+		{
+			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.debug_directory;
+
+			if (!data_directory.present())
+			{
+				return { };
+			}
+
+			auto module = reinterpret_cast<std::uint8_t*>(this);
+
+			const std::uint32_t entries = data_directory.size / sizeof(debug_directory_t);
+
+			return { module, data_directory.virtual_address, entries };
+		}
+
+		[[nodiscard]] debug_info_iterator_t<const debug_directory_t> debug_info() const
+		{
+			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.debug_directory;
+
+			if (!data_directory.present())
+			{
+				return { };
+			}
+
+			auto module = reinterpret_cast<const std::uint8_t*>(this);
+
+			const std::uint32_t entries = data_directory.size / sizeof(debug_directory_t);
+
+			return { module, data_directory.virtual_address, entries };
 		}
 
 		section_header_t* find_section(std::string_view name);
