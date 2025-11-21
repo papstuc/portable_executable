@@ -7,10 +7,10 @@
 #include "export_directory.hpp"
 #include "imports_directory.hpp"
 #include "relocations_directory.hpp"
+#include "debug_directory.hpp"
+#include "exception_directory.hpp"
 
 #include <vector>
-
-#include "debug_directory.hpp"
 
 namespace portable_executable
 {
@@ -228,6 +228,34 @@ namespace portable_executable
 			const std::uint32_t entries = data_directory.size / sizeof(debug_directory_t);
 
 			return { module, data_directory.virtual_address, entries };
+		}
+
+		[[nodiscard]] runtime_functions_range_t<runtime_functions_iterator_t> runtime_functions()
+		{
+			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.exception_directory;
+
+			if (!data_directory.present())
+			{
+				return { };
+			}
+
+			auto module = reinterpret_cast<std::uint8_t*>(this);
+
+			return { module, data_directory.virtual_address, data_directory.size };
+		}
+
+		[[nodiscard]] runtime_functions_range_t<const runtime_functions_iterator_t> runtime_functions() const
+		{
+			data_directory_t data_directory = this->nt_headers()->optional_header.data_directories.exception_directory;
+
+			if (!data_directory.present())
+			{
+				return { };
+			}
+
+			auto module = reinterpret_cast<const std::uint8_t*>(this);
+
+			return { module, data_directory.virtual_address, data_directory.size };
 		}
 
 		section_header_t* find_section(std::string_view name);
