@@ -47,7 +47,6 @@ namespace portable_executable
     {
     private:
         using pointer_type = std::conditional_t<std::is_const_v<T>, const std::uint8_t*, std::uint8_t*>;
-        using const_pointer_type = const std::uint8_t*;
 
         T* m_debug_info = nullptr;
         T* m_end_debug_info = nullptr;
