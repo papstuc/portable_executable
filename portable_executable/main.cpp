@@ -40,6 +40,20 @@ static void run_image_tests(const portable_executable::image_t* image)
 	{
 		std::printf("va: 0x%x -> type: 0x%x\n", debug_info.virtual_address, static_cast<std::uint32_t>(debug_info.type));
 	}
+
+	std::printf("iterating exceptions...\n");
+
+	for (const auto runtime_function : image->runtime_functions())
+	{
+		const auto virtual_address = static_cast<std::uint32_t>(runtime_function.function_begin - image->as<const std::uint8_t*>());
+
+		std::printf("va: 0x%x -> unwind code count: 0x%x\n", virtual_address, runtime_function.unwind_info->unwind_code_count);
+
+		for (const auto unwind_opcode : *runtime_function.unwind_info)
+		{
+			std::printf("(unwind code) offset: 0x%x, info: 0x%x\n", unwind_opcode.offset, unwind_opcode.info);
+		}
+	}
 }
 
 std::int32_t main()

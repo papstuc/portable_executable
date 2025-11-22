@@ -63,6 +63,35 @@ for (const auto& relocation : image->relocations())
 }
 ```
 
+### Iterating debug information
+The debug information iterator provides the caller with a raw view of the debug information.
+
+```cpp
+for (const auto debug_info : image->debug_info())
+{
+	std::printf("va: 0x%x -> type: 0x%x\n", debug_info.virtual_address, static_cast<std::uint32_t>(debug_info.type));
+}
+```
+
+### Iterating exceptions/runtime functions
+The runtime functions iterator abstracts away boilerplate code and returns the pointer to the function begin, function end, and the unwind info.
+
+The unwind code iterator provides the caller with a raw view of the unwind code. This is accessed via the unwind_info_t structure.
+
+```cpp
+for (const auto runtime_function : image->runtime_functions())
+{
+	const auto virtual_address = static_cast<std::uint32_t>(runtime_function.function_begin - image->as<const std::uint8_t*>());
+
+	std::printf("va: 0x%x -> unwind code count: 0x%x\n", virtual_address, runtime_function.unwind_info->unwind_code_count);
+
+	for (const auto unwind_opcode : *runtime_function.unwind_info)
+	{
+		std::printf("(unwind code) offset: 0x%x, info: 0x%x\n", unwind_opcode.offset, unwind_opcode.info);
+	}
+}
+```
+
 ### Signature scanning
 
 This library supports both IDA and Byte signature scanning.
@@ -80,6 +109,6 @@ std::printf("ntoskrnl!HviIsAnyHypervisorPresent -> 0x%p\n", hvi_is_any_hyperviso
 ```
 
 ## Credits
-- [noahswtf](https://github.com/noahswtf) for the relocations parsing functionality (iterator, definitions) via [this](https://github.com/papstuc/portable_executable/pull/1) pull request
+- [noahware](https://github.com/noahware) for the relocations parsing, debug information parsing, and exceptions parsing
 - [can1357](https://github.com/can1357) for section_characteristics_t, thunk_data_t, data_directory_t and data_directories_t definitions from his [linux-pe](https://github.com/can1357/linux-pe) library
 - [john](https://github.com/vmp38) for forcing me into releasing a version without any CRT linkage

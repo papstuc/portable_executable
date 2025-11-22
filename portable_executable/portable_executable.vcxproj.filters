@@ -45,6 +45,9 @@
     <ClCompile Include="portable_executable\file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="portable_executable\exception_directory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="portable_executable\dos_header.hpp">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="portable_executable\debug_directory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="portable_executable\exception_directory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
